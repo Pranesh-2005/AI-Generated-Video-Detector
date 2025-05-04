@@ -108,4 +108,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### Disclaimer
 
-DeepSecure-AI is a research project and is designed for educational purposes.Please use responsibly and always give proper credit when utilizing the model in your work.
+This is a research project and is designed for educational purposes.Please use responsibly and always give proper credit when utilizing the model in your work.
