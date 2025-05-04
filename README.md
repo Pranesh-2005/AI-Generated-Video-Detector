@@ -1,6 +1,6 @@
-# DeepSecure-AI
+# About
 
-DeepSecure-AI is a powerful open-source tool designed to detect fake images, videos, and audios. Utilizing state-of-the-art deep learning techniques like EfficientNetV2 and MTCNN, DeepSecure-AI offers frame-by-frame video analysis, enabling high-accuracy deepfake detection. It's developed with a focus on ease of use, making it accessible for researchers, developers, and security analysts..
+This is a powerful open-source tool designed to detect fake images, videos, and audios. Utilizing state-of-the-art deep learning techniques like EfficientNetV2 and MTCNN, It offers frame-by-frame video analysis, enabling high-accuracy deepfake detection. It's developed with a focus on ease of use, making it accessible for researchers, developers, and security analysts..
 
 ---
 
@@ -16,7 +16,7 @@ DeepSecure-AI is a powerful open-source tool designed to detect fake images, vid
 
 ## Demo-Data
 
-You can test the deepfake detection capabilities of DeepSecure-AI by uploading your video files. The tool will analyze each frame of the video, detect faces, and determine the likelihood of the video being real or fake.
+You can test the deepfake detection capabilities of this by uploading your video files. The tool will analyze each frame of the video, detect faces, and determine the likelihood of the video being real or fake.
 
 Examples:  
 1. [Video1-fake-1-ff.mp4](#)
@@ -29,16 +29,16 @@ Examples:
 DeepSecure-AI uses the following architecture:
 
 1. Face Detection:  
-   The [MTCNN](https://arxiv.org/abs/1604.02878) model detects faces in each frame of the video. If no face is detected, it will use the previous frame's face to ensure accuracy.
+   The [MTCNN](https://mtcnn.readthedocs.io/en/latest/) model detects faces in each frame of the video. If no face is detected, it will use the previous frame's face to ensure accuracy.
 
 2. Fake vs. Real Classification:  
-   Once the face is detected, it's resized and fed into the [EfficientNetV2](https://arxiv.org/abs/2104.00298) deep learning model, which determines the likelihood of the frame being real or fake.
+   Once the face is detected, it's resized and fed into the [EfficientNetV2](https://medium.com/aiguys/review-efficientnetv2-smaller-models-and-faster-training-47d4215dcdfb) deep learning model, which determines the likelihood of the frame being real or fake.
 
 3. Fake Confidence:  
    A final prediction is generated as a percentage score, indicating the confidence that the media is fake.
 
 4. Results:  
-   DeepSecure-AI provides an output video, highlighting the detected faces and a summary of whether the input is classified as real or fake.
+   This provides an output video, highlighting the detected faces and a summary of whether the input is classified as real or fake.
 
 ---
 
@@ -59,11 +59,12 @@ Ensure you have the following installed:
 ### Installation
 
 1. Clone the repository:
-        git clone https://github.com/Divith123/DeepSecure-AI.git
-    cd DeepSecure-AI
-    
+        git clone https://github.com/Pranesh-2005/AI-Generated-Video-Detector.git
+      
+2. Navigate to the cloned repo:
+        cd AI-Generated-Video-Detector or Go To the repo manually
 
-2. Install required dependencies:
+3. Install required dependencies:
         pip install -r requirements.txt
     
 
@@ -75,13 +76,13 @@ Ensure you have the following installed:
         python app.py
     
 
-2. The web interface will be available locally. You can upload a video, and DeepSecure-AI will analyze and display results.
+2. The web interface will be available locally. You can upload a video, and model will analyze and display results.
 
 ---
 
 ## Example Usage
 
-Upload a video or image to DeepSecure-AI to detect fake media. Here are some sample predictions:
+Upload a video or image to detect fake media. Here are some sample predictions:
 
 - Video Analysis: The tool will detect faces from each frame and classify whether the video is fake or real.
 - Result Output: A GIF or MP4 file with the sequence of detected faces and classification result will be provided.
@@ -102,21 +103,6 @@ Upload a video or image to DeepSecure-AI to detect fake media. Here are some sam
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## Contributions
-
-Contributions are welcome! If you'd like to improve the tool, feel free to submit a pull request or raise an issue.
-
-For more information, check the [Contribution Guidelines](CONTRIBUTING.md).
-
----
-
-## References
-- Li et al. (2020): [Celeb-DF(V2)](https://arxiv.org/abs/2008.06456)
-- Rossler et al. (2019): [FaceForensics++](https://arxiv.org/abs/1901.08971)
-- Timesler (2020): [Facial Recognition Model in PyTorch](https://www.kaggle.com/timesler/facial-recognition-model-in-pytorch)
 
 ---
 
