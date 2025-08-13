@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multimodal Deepfake Detector</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Multimodal Deepfake Detector</h1>
+            <p>Deepfake detection for videos, images and audio modalities.</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab(event, 'video-tab')">Video Detection</button>
+            <button class="tab-button" onclick="openTab(event, 'image-tab')">Image Detection</button>
+            <button class="tab-button" onclick="openTab(event, 'audio-tab')">Audio Detection</button>
+        </div>
+
+        <div id="video-tab" class="tab-content active">
+            <h2>Video Deepfake Detection</h2>
+            <div class="upload-area" id="video-upload">
+                <input type="file" id="video-input" accept="video/*" style="display: none;">
+                <div class="upload-placeholder">
+                    <i class="upload-icon">📹</i>
+                    <p>Click to upload video or drag and drop</p>
+                    <p class="file-types">Supported: MP4, AVI, MOV</p>
+                </div>
+            </div>
+            <button id="video-predict" class="predict-btn" disabled>Analyze Video</button>
+            <div id="video-result" class="result"></div>
+            <div class="examples">
+                <h3>Try Examples:</h3>
+                <button class="example-btn" onclick="loadExample('video', 'videos/aaa.mp4')">Example 1</button>
+                <button class="example-btn" onclick="loadExample('video', 'videos/bbb.mp4')">Example 2</button>
+            </div>
+        </div>
+
+        <div id="image-tab" class="tab-content">
+            <h2>Image Deepfake Detection</h2>
+            <div class="upload-area" id="image-upload">
+                <input type="file" id="image-input" accept="image/*" style="display: none;">
+                <div class="upload-placeholder">
+                    <i class="upload-icon">🖼️</i>
+                    <p>Click to upload image or drag and drop</p>
+                    <p class="file-types">Supported: JPG, PNG, JPEG</p>
+                </div>
+            </div>
+            <button id="image-predict" class="predict-btn" disabled>Analyze Image</button>
+            <div id="image-result" class="result"></div>
+            <div class="examples">
+                <h3>Try Examples:</h3>
+                <button class="example-btn" onclick="loadExample('image', 'images/lady.jpg')">Example 1</button>
+                <button class="example-btn" onclick="loadExample('image', 'images/fake_image.jpg')">Example 2</button>
+            </div>
+        </div>
+
+        <div id="audio-tab" class="tab-content">
+            <h2>Audio Deepfake Detection</h2>
+            <div class="upload-area" id="audio-upload">
+                <input type="file" id="audio-input" accept="audio/*" style="display: none;">
+                <div class="upload-placeholder">
+                    <i class="upload-icon">🎵</i>
+                    <p>Click to upload audio or drag and drop</p>
+                    <p class="file-types">Supported: WAV, FLAC, MP3</p>
+                </div>
+            </div>
+            <button id="audio-predict" class="predict-btn" disabled>Analyze Audio</button>
+            <div id="audio-result" class="result"></div>
+            <div class="examples">
+                <h3>Try Examples:</h3>
+                <button class="example-btn" onclick="loadExample('audio', 'audios/DF_E_2000027.flac')">Example 1</button>
+                <button class="example-btn" onclick="loadExample('audio', 'audios/DF_E_2000031.flac')">Example 2</button>
+            </div>
+        </div>
+
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Analyzing... Please wait</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
