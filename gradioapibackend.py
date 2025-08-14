@@ -134,15 +134,6 @@ In a production environment with full AI models, this analysis would include:
 
 💡 Your {prediction_type} was successfully processed and validated by our backend system."""
 
-@app.route('/api/health', methods=['GET'])
-def health_check():
-    """Health check endpoint"""
-    return jsonify({
-        'status': 'healthy',
-        'hf_space_available': HF_AVAILABLE,
-        'supported_formats': ALLOWED_EXTENSIONS,
-        'max_file_size_mb': app.config['MAX_CONTENT_LENGTH'] // (1024 * 1024)
-    })
 
 @app.route('/api/predict/<prediction_type>', methods=['POST'])
 def predict(prediction_type):

@@ -1,23 +1,6 @@
 const API_BASE_URL = 'http://127.0.0.1:5000/api';
 // For local development, use: const API_BASE_URL = 'http://127.0.0.1:5000/api';
 
-// Check backend health on page load
-async function checkBackendHealth() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/health`);
-        const data = await response.json();
-        console.log('Backend Health:', data);
-        
-        // Show health status in UI (optional)
-        if (!data.hf_space_available) {
-            console.log('Running in demo mode - HF Space not available');
-        }
-    } catch (error) {
-        console.error('Backend health check failed:', error);
-        showError('Unable to connect to backend. Please try again later.');
-    }
-}
-
 // Tab functionality
 function openTab(evt, tabName) {
     const tabcontent = document.getElementsByClassName("tab-content");
@@ -278,5 +261,4 @@ document.addEventListener('DOMContentLoaded', () => {
     setupFileUpload('video');
     setupFileUpload('image');
     setupFileUpload('audio');
-    checkBackendHealth();
 });
