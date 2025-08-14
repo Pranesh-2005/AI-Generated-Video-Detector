@@ -1,4 +1,22 @@
 const API_BASE_URL = 'http://127.0.0.1:5000/api';
+// For local development, use: const API_BASE_URL = 'http://127.0.0.1:5000/api';
+
+// Check backend health on page load
+async function checkBackendHealth() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/health`);
+        const data = await response.json();
+        console.log('Backend Health:', data);
+        
+        // Show health status in UI (optional)
+        if (!data.hf_space_available) {
+            console.log('Running in demo mode - HF Space not available');
+        }
+    } catch (error) {
+        console.error('Backend health check failed:', error);
+        showError('Unable to connect to backend. Please try again later.');
+    }
+}
 
 // Tab functionality
 function openTab(evt, tabName) {
@@ -66,10 +84,33 @@ function handleFileSelect(file, type) {
     const uploadArea = document.getElementById(`${type}-upload`);
     const predictBtn = document.getElementById(`${type}-predict`);
     
+    // Validate file type
+    const allowedTypes = {
+        'image': ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/bmp', 'image/webp'],
+        'video': ['video/mp4', 'video/avi', 'video/mov', 'video/mkv', 'video/webm', 'video/x-flv'],
+        'audio': ['audio/wav', 'audio/mp3', 'audio/flac', 'audio/ogg', 'audio/aac', 'audio/x-m4a']
+    };
+    
+    if (!allowedTypes[type].includes(file.type) && !isValidFileExtension(file.name, type)) {
+        showError(`Invalid file type for ${type}. Please select a valid ${type} file.`);
+        resetUploadArea(type);
+        return;
+    }
+    
+    // Check file size (100MB limit)
+    const maxSize = 100 * 1024 * 1024; // 100MB
+    if (file.size > maxSize) {
+        showError('File too large. Maximum size is 100MB.');
+        resetUploadArea(type);
+        return;
+    }
+    
     // Update UI to show file selected
+    const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
     uploadArea.innerHTML = `
         <div class="file-preview">
             <p><strong>Selected:</strong> ${file.name}</p>
+            <p><strong>Size:</strong> ${fileSizeMB} MB</p>
             <p class="file-types">Click "Analyze ${type.charAt(0).toUpperCase() + type.slice(1)}" to process</p>
         </div>
     `;
@@ -95,7 +136,18 @@ function handleFileSelect(file, type) {
     predictBtn.disabled = false;
 }
 
-function predictFile(file, type) {
+function isValidFileExtension(filename, type) {
+    const extensions = {
+        'image': ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'],
+        'video': ['mp4', 'avi', 'mov', 'mkv', 'webm', 'flv'],
+        'audio': ['wav', 'mp3', 'flac', 'ogg', 'aac', 'm4a']
+    };
+    
+    const ext = filename.split('.').pop().toLowerCase();
+    return extensions[type].includes(ext);
+}
+
+async function predictFile(file, type) {
     const loading = document.getElementById('loading');
     const resultDiv = document.getElementById(`${type}-result`);
     
@@ -106,43 +158,69 @@ function predictFile(file, type) {
     const formData = new FormData();
     formData.append('file', file);
     
-    fetch(`${API_BASE_URL}/predict/${type}`, {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'Accept': 'application/json',
-        }
-    })
-    .then(response => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/predict/${type}`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json',
+            }
+        });
+        
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return response.json();
-    })
-    .then(data => {
+        
+        const data = await response.json();
         loading.style.display = 'none';
         
         if (data.status === 'success') {
             resultDiv.className = 'result success';
-            resultDiv.innerHTML = data.result.replace(/\n/g, '<br>');
+            resultDiv.innerHTML = formatResult(data);
         } else {
             resultDiv.className = 'result error';
             resultDiv.textContent = `Error: ${data.error}`;
         }
-    })
-    .catch(error => {
+        
+    } catch (error) {
         loading.style.display = 'none';
         resultDiv.className = 'result error';
         resultDiv.textContent = `Error: ${error.message}`;
         console.error('Error:', error);
-    });
+    }
+}
+
+function formatResult(data) {
+    let html = data.result.replace(/\n/g, '<br>');
+    
+    // Add source information
+    if (data.source) {
+        const sourceInfo = {
+            'huggingface_space': '🤖 Powered by Hugging Face Space',
+            'demo_mode': '⚠️ Demo Mode - Backend Only',
+            'demo_fallback': '⚠️ Demo Mode - Service Unavailable'
+        };
+        
+        html += `<br><br><small style="color: #666; font-style: italic;">${sourceInfo[data.source] || data.source}</small>`;
+    }
+    
+    // Add file info if available
+    if (data.file_info) {
+        html += `<br><small style="color: #888;">Processed: ${data.file_info.name} (${data.file_info.size_mb}MB)</small>`;
+    }
+    
+    return html;
 }
 
 function loadExample(type, filename) {
     const resultDiv = document.getElementById(`${type}-result`);
     
     resultDiv.className = 'result';
-    resultDiv.textContent = `Example: ${filename} - Upload a file to test this functionality`;
+    resultDiv.innerHTML = `
+        <strong>Example: ${filename}</strong><br>
+        Upload your own ${type} file to test the deepfake detection functionality.<br>
+        <small style="color: #666;">This is a demonstration of the available example files.</small>
+    `;
 }
 
 function resetUploadArea(type) {
@@ -157,9 +235,9 @@ function resetUploadArea(type) {
     };
     
     const fileTypes = {
-        'video': 'Supported: MP4, AVI, MOV',
-        'image': 'Supported: JPG, PNG, JPEG',
-        'audio': 'Supported: WAV, FLAC, MP3'
+        'video': 'Supported: MP4, AVI, MOV, MKV, WebM',
+        'image': 'Supported: JPG, PNG, GIF, BMP, WebP',
+        'audio': 'Supported: WAV, MP3, FLAC, OGG, AAC'
     };
     
     uploadArea.innerHTML = `
@@ -174,9 +252,31 @@ function resetUploadArea(type) {
     predictBtn.disabled = true;
 }
 
+function showError(message) {
+    // Create a temporary error display
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'result error';
+    errorDiv.textContent = message;
+    errorDiv.style.position = 'fixed';
+    errorDiv.style.top = '20px';
+    errorDiv.style.right = '20px';
+    errorDiv.style.zIndex = '10000';
+    errorDiv.style.maxWidth = '400px';
+    
+    document.body.appendChild(errorDiv);
+    
+    // Remove after 5 seconds
+    setTimeout(() => {
+        if (errorDiv.parentNode) {
+            errorDiv.parentNode.removeChild(errorDiv);
+        }
+    }, 5000);
+}
+
 // Initialize when page loads
 document.addEventListener('DOMContentLoaded', () => {
     setupFileUpload('video');
     setupFileUpload('image');
     setupFileUpload('audio');
+    checkBackendHealth();
 });
