@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@gradio/client':
-        specifier: latest
-        version: 1.17.0(@types/node@22.17.2)
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.62.0(react@19.1.1))
@@ -162,6 +159,9 @@ importers:
         specifier: 3.25.67
         version: 3.25.67
     devDependencies:
+      '@gradio/client':
+        specifier: latest
+        version: 1.17.0(@types/node@22.17.2)
       '@tailwindcss/postcss':
         specifier: ^4.1.9
         version: 4.1.12

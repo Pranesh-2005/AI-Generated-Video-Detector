@@ -9,7 +9,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@gradio/client": "latest",
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "1.2.2",
     "@radix-ui/react-alert-dialog": "1.1.4",
@@ -62,6 +61,7 @@
     "zod": "3.25.67"
   },
   "devDependencies": {
+    "@gradio/client": "latest",
     "@tailwindcss/postcss": "^4.1.9",
     "@types/node": "^22",
     "@types/react": "^19",
