@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multimodal Deepfake Detector</title>
+    <title>Fake Media Detector</title>
     <link rel="apple-touch-icon" sizes="57x57" href="./icons/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="./icons/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="./icons/apple-icon-72x72.png">
@@ -39,161 +39,143 @@
     <meta name="twitter:description" content="Advanced AI-powered deepfake detection for videos, images, and audio">
     <meta name="twitter:image" content="../icons/android-icon-192x192.png">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <header>
+    <div class="app">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-overlay"></div>
             <div class="header-content">
-                <h1>🔍 AI Deepfake Detector</h1>
-                <p>Advanced multimodal detection for videos, images, and audio</p>
+                <div class="header-icon">
+                    <svg class="shield-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                </div>
+                <h1 class="header-title">Fake Media Detector</h1>
+                <p class="header-subtitle">Advanced AI-powered detection for deepfakes and manipulated content</p>
             </div>
-        </header>
+        </div>
 
+        <!-- Main Content -->
         <div class="main-content">
-            <div class="tabs">
-                <button class="tab-button active" onclick="openTab(event, 'video-tab')">
-                    <span class="tab-icon">📹</span>
-                    <span class="tab-text">Video</span>
-                </button>
-                <button class="tab-button" onclick="openTab(event, 'image-tab')">
-                    <span class="tab-icon">🖼️</span>
-                    <span class="tab-text">Image</span>
-                </button>
-                <button class="tab-button" onclick="openTab(event, 'audio-tab')">
-                    <span class="tab-icon">🎵</span>
-                    <span class="tab-text">Audio</span>
-                </button>
-            </div>
-
-            <div id="video-tab" class="tab-content active">
-                <div class="content-section">
-                    <h2>Video Deepfake Detection</h2>
-                    <p class="section-description">Upload a video file to analyze for deepfake manipulation</p>
-                    
-                    <div class="upload-container">
-                        <div class="upload-area" id="video-upload">
-                            <input type="file" id="video-input" accept="video/*" style="display: none;">
-                            <div class="upload-placeholder">
-                                <div class="upload-icon">📹</div>
-                                <h3>Drop your video here</h3>
-                                <p>or click to browse</p>
-                                <div class="file-types">MP4, AVI, MOV, MKV, WebM (max 100MB)</div>
-                            </div>
-                        </div>
-                        
-                        <div class="action-buttons">
-                            <button id="video-predict" class="predict-btn" disabled>
-                                <span class="btn-icon">🔍</span>
-                                Analyze Video
+            <div class="container">
+                <div class="card">
+                    <!-- Type Selection -->
+                    <div class="section">
+                        <h2 class="section-title">
+                            <svg class="zap-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="13,2 3,14 12,14 11,22 21,10 12,10 13,2"/>
+                            </svg>
+                            Select Media Type
+                        </h2>
+                        <div class="type-grid">
+                            <button class="type-button active" data-type="image">
+                                <svg class="type-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                                    <polyline points="21,15 16,10 5,21"/>
+                                </svg>
+                                <span>Image</span>
                             </button>
-                            <button id="video-cancel" class="cancel-btn" style="display: none;">
-                                <span class="btn-icon">✕</span>
-                                Cancel
+                            <button class="type-button" data-type="video">
+                                <svg class="type-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="23,7 16,12 23,17 23,7"/>
+                                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                                </svg>
+                                <span>Video</span>
                             </button>
-                            <button id="video-clear" class="clear-btn" style="display: none;">
-                                <span class="btn-icon">🗑️</span>
-                                Clear
+                            <button class="type-button" data-type="audio">
+                                <svg class="type-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 18V5l12-2v13"/>
+                                    <circle cx="6" cy="18" r="3"/>
+                                    <circle cx="18" cy="16" r="3"/>
+                                </svg>
+                                <span>Audio</span>
                             </button>
                         </div>
                     </div>
-                    
-                    <div id="video-result" class="result"></div>
+
+                    <!-- File Upload -->
+                    <div class="section">
+                        <h2 class="section-title">
+                            <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="7,10 12,15 17,10"/>
+                                <line x1="12" y1="15" x2="12" y2="3"/>
+                            </svg>
+                            Upload File
+                        </h2>
+
+                        <div class="upload-area" id="uploadArea">
+                            <input type="file" id="fileInput" class="file-input" accept="image/*">
+                            <div class="upload-content">
+                                <div class="upload-icon-container" id="uploadIconContainer">
+                                    <svg class="upload-default-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                        <polyline points="7,10 12,15 17,10"/>
+                                        <line x1="12" y1="15" x2="12" y2="3"/>
+                                    </svg>
+                                </div>
+                                <div class="upload-text" id="uploadText">
+                                    <p class="upload-main-text">Drop your image here or click to browse</p>
+                                    <p class="upload-sub-text">Supports all common image formats</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Added file preview section -->
+                        <div class="file-preview" id="filePreview" style="display: none;">
+                            <div class="preview-header">
+                                <h3 class="preview-title">File Preview</h3>
+                                <button class="remove-file-btn" id="removeFileBtn" type="button">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="preview-content" id="previewContent">
+                                <!-- Preview will be inserted here -->
+                            </div>
+                            <div class="file-details" id="fileDetails">
+                                <!-- File details will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analyze Button -->
+                    <div class="section">
+                        <button class="analyze-button" id="analyzeButton" disabled>
+                            <div class="button-content" id="buttonContent">
+                                <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                </svg>
+                                <span>Analyze Media</span>
+                            </div>
+                        </button>
+                    </div>
                 </div>
-            </div>
 
-            <div id="image-tab" class="tab-content">
-                <div class="content-section">
-                    <h2>Image Deepfake Detection</h2>
-                    <p class="section-description">Upload an image to detect facial manipulation and synthetic content</p>
-                    
-                    <div class="upload-container">
-                        <div class="upload-area" id="image-upload">
-                            <input type="file" id="image-input" accept="image/*" style="display: none;">
-                            <div class="upload-placeholder">
-                                <div class="upload-icon">🖼️</div>
-                                <h3>Drop your image here</h3>
-                                <p>or click to browse</p>
-                                <div class="file-types">JPG, PNG, GIF, BMP, WebP (max 100MB)</div>
-                            </div>
-                        </div>
-                        
-                        <div class="action-buttons">
-                            <button id="image-predict" class="predict-btn" disabled>
-                                <span class="btn-icon">🔍</span>
-                                Analyze Image
-                            </button>
-                            <button id="image-cancel" class="cancel-btn" style="display: none;">
-                                <span class="btn-icon">✕</span>
-                                Cancel
-                            </button>
-                            <button id="image-clear" class="clear-btn" style="display: none;">
-                                <span class="btn-icon">🗑️</span>
-                                Clear
-                            </button>
+                <!-- Results -->
+                <div class="result-card" id="resultCard" style="display: none;">
+                    <div class="result-content">
+                        <div class="result-icon" id="resultIcon"></div>
+                        <div class="result-text">
+                            <h3 class="result-title">Analysis Result</h3>
+                            <p class="result-description" id="resultDescription"></p>
                         </div>
                     </div>
-                    
-                    <div id="image-result" class="result"></div>
-                </div>
-            </div>
-
-            <div id="audio-tab" class="tab-content">
-                <div class="content-section">
-                    <h2>Audio Deepfake Detection</h2>
-                    <p class="section-description">Upload audio to detect voice cloning and synthetic speech</p>
-                    
-                    <div class="upload-container">
-                        <div class="upload-area" id="audio-upload">
-                            <input type="file" id="audio-input" accept="audio/*" style="display: none;">
-                            <div class="upload-placeholder">
-                                <div class="upload-icon">🎵</div>
-                                <h3>Drop your audio here</h3>
-                                <p>or click to browse</p>
-                                <div class="file-types">WAV, MP3, FLAC, OGG, AAC (max 100MB)</div>
-                            </div>
-                        </div>
-                        
-                        <div class="action-buttons">
-                            <button id="audio-predict" class="predict-btn" disabled>
-                                <span class="btn-icon">🔍</span>
-                                Analyze Audio
-                            </button>
-                            <button id="audio-cancel" class="cancel-btn" style="display: none;">
-                                <span class="btn-icon">✕</span>
-                                Cancel
-                            </button>
-                            <button id="audio-clear" class="clear-btn" style="display: none;">
-                                <span class="btn-icon">🗑️</span>
-                                Clear
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div id="audio-result" class="result"></div>
                 </div>
             </div>
         </div>
-
-        <div id="loading" class="loading-overlay" style="display: none;">
-            <div class="loading-content">
-                <div class="spinner"></div>
-                <h3>Analyzing Content</h3>
-                <p id="loading-message">Uploading and processing your file...</p>
-                <div class="progress-bar">
-                    <div class="progress-fill"></div>
-                </div>
-            </div>
-        </div>
-
-        <footer>
-            <div class="footer-content">
-                <p>⚡ Powered by advanced AI detection models</p>
-                <div class="footer-links">
-                    <span>Made with ❤️ for digital security</span>
-                </div>
-            </div>
-        </footer>
     </div>
+
+    <!-- Load Gradio Client -->
+<script type="module">
+    import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js";
+    window.GradioClient = Client; // ✅ official global
+  </script>
 
     <script src="script.js"></script>
 </body>
